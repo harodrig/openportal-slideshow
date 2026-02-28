@@ -43,6 +43,7 @@ function setSecurityHeaders(res) {
       "img-src 'self'",
       "style-src 'self'",
       "script-src 'self' https://cdnjs.cloudflare.com",
+      "media-src blob: data:",
       "frame-ancestors 'none'",
     ].join("; "),
   );
