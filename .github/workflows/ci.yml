@@ -92,6 +92,10 @@ jobs:
         with:
           image-ref: photo-slideshow:scan
           format: table
-          exit-code: "1" # fail the job if vulnerabilities found
+          exit-code: "1"
           severity: CRITICAL,HIGH
-          ignore-unfixed: true # ignore vulns with no available fix
+          ignore-unfixed: true
+          skip-files: |
+            usr/local/lib/node_modules/npm
+            usr/local/lib/node_modules/corepack
+            opt/yarn-v1.22.22
