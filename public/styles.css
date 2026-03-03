@@ -306,11 +306,14 @@ body {
 
 .side-menu__suboption {
     margin-bottom: 1.25rem;
-    display: none;
+    padding-left: 0.75rem;
+    border-left: 2px solid #2a2a2a;
+    transition: opacity 0.2s ease;
 }
 
-.side-menu__suboption.is-visible {
-    display: block;
+.side-menu__suboption.is-disabled {
+    opacity: 0.35;
+    pointer-events: none;
 }
 
 .side-menu__sublabel {
@@ -337,13 +340,14 @@ body {
 
 /* ── Date sub-group (nested inside clock settings) ──── */
 .side-menu__subgroup {
-    display: none;
     padding-top: 0.75rem;
     border-top: 1px solid #2a2a2a;
+    transition: opacity 0.2s ease;
 }
 
-.side-menu__subgroup.is-visible {
-    display: block;
+.side-menu__subgroup.is-disabled {
+    opacity: 0.35;
+    pointer-events: none;
 }
 
 /* ── Date format list ───────────────────────────────── */
