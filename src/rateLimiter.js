@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function createRateLimiter({ windowMs = 60_000, maxRequests = 100 } = {}) {
   const clients = new Map();
