@@ -57,7 +57,8 @@
             </div>
 
             <div class="slideshow__clock" id="clock" aria-live="off">
-                <span id="clock-time"></span>
+                <span id="clock-date" class="clock__date"></span>
+                <span id="clock-time" class="clock__time"></span>
             </div>
         </main>
 
@@ -91,7 +92,7 @@
                     </button>
                 </div>
 
-                <div class="side-menu__suboption" id="clock-position-group">
+                <div class="side-menu__suboption" id="clock-settings-group">
                     <span class="side-menu__sublabel">Clock position</span>
                     <div class="side-menu__positions">
                         <button
@@ -122,6 +123,109 @@
                         >
                             &#8601;
                         </button>
+                    </div>
+
+                    <label class="side-menu__sublabel" for="clock-size-slider"
+                        >Clock size</label
+                    >
+                    <input
+                        type="range"
+                        id="clock-size-slider"
+                        min="1"
+                        max="5"
+                        value="3"
+                        class="side-menu__slider"
+                        aria-label="Clock size"
+                    />
+
+                    <div class="side-menu__option">
+                        <span class="side-menu__label">Show seconds</span>
+                        <button
+                            class="btn btn--toggle"
+                            id="toggle-seconds"
+                            role="switch"
+                            aria-checked="false"
+                            aria-label="Toggle show seconds"
+                        >
+                            Off
+                        </button>
+                    </div>
+
+                    <div class="side-menu__option">
+                        <span class="side-menu__label">Hour format</span>
+                        <button
+                            class="btn btn--toggle"
+                            id="toggle-hour-format"
+                            aria-label="Toggle 12/24 hour format"
+                            aria-pressed="false"
+                        >
+                            24h
+                        </button>
+                    </div>
+
+                    <div class="side-menu__option">
+                        <span class="side-menu__label">Show date</span>
+                        <button
+                            class="btn btn--toggle"
+                            id="toggle-date"
+                            role="switch"
+                            aria-checked="false"
+                            aria-label="Toggle date display"
+                        >
+                            Off
+                        </button>
+                    </div>
+
+                    <div class="side-menu__subgroup" id="clock-date-options-group">
+                        <span class="side-menu__sublabel">Date position</span>
+                        <div class="side-menu__positions">
+                            <button
+                                class="btn btn--position btn--active"
+                                id="btn-date-above"
+                                aria-label="Date above time"
+                            >
+                                Above
+                            </button>
+                            <button
+                                class="btn btn--position"
+                                id="btn-date-below"
+                                aria-label="Date below time"
+                            >
+                                Below
+                            </button>
+                        </div>
+
+                        <span class="side-menu__sublabel">Date format</span>
+                        <div class="side-menu__date-formats">
+                            <button
+                                class="btn btn--date-fmt btn--active"
+                                data-fmt="0"
+                                aria-label="Format: day name, number, month"
+                            >
+                                Tue 3 Mar
+                            </button>
+                            <button
+                                class="btn btn--date-fmt"
+                                data-fmt="1"
+                                aria-label="Format: DD/MM/YYYY"
+                            >
+                                DD/MM/YYYY
+                            </button>
+                            <button
+                                class="btn btn--date-fmt"
+                                data-fmt="2"
+                                aria-label="Format: YYYY-MM-DD"
+                            >
+                                YYYY-MM-DD
+                            </button>
+                            <button
+                                class="btn btn--date-fmt"
+                                data-fmt="3"
+                                aria-label="Format: Mon D, YYYY"
+                            >
+                                Mar 3, 2026
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
