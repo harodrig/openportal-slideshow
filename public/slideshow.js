@@ -287,7 +287,7 @@ function applyClockEnabled(enabled) {
   toggleClockBtn.textContent = enabled ? 'On' : 'Off';
   toggleClockBtn.setAttribute('aria-checked', String(enabled));
   toggleClockBtn.classList.toggle('is-on', enabled);
-  clockSettingsGroup.classList.toggle('is-visible', enabled);
+  clockSettingsGroup.classList.toggle('is-disabled', !enabled);
   // Only show the clock overlay when currently in fullscreen
   slideshowEl.classList.toggle('has-clock', enabled && !!document.fullscreenElement);
 
@@ -311,7 +311,7 @@ function setClockPosition(position) {
 
 function applyClockSize(size) {
   clockSize = size;
-  clockEl.style.fontSize = `${size * 0.4 + 0.6}rem`;
+  clockEl.style.fontSize = `${size * 0.5 + 0.5}rem`;
 }
 
 function applyShowSeconds(enabled) {
@@ -335,7 +335,7 @@ function applyShowDate(enabled) {
   toggleDateBtn.textContent = enabled ? 'On' : 'Off';
   toggleDateBtn.setAttribute('aria-checked', String(enabled));
   toggleDateBtn.classList.toggle('is-on', enabled);
-  clockDateOptionsGroup.classList.toggle('is-visible', enabled);
+  clockDateOptionsGroup.classList.toggle('is-disabled', !enabled);
   clockEl.classList.toggle('has-date', enabled);
   if (enabled) updateClock();
 }
