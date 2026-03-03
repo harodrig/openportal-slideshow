@@ -3,8 +3,8 @@ services:
     build:
       context: .
       target: production
-    image: portal-slideshow:latest
-    container_name: portal-slideshow
+    image: openportal-slideshow:latest
+    container_name: openportal-slideshow
     ports:
       - "3000:3000"
     volumes:
