@@ -20,14 +20,18 @@ RUN node --test tests/*.test.js
 # STAGE 2: production image
 FROM node:20-alpine AS production
 
-# Create a non-root user and group
-RUN addgroup -S portal && adduser -S portal -G portal
-
 WORKDIR /app
+
+# Remove npm and other build tools not needed at runtime
+RUN npm uninstall -g npm corepack && \
+    rm -rf /opt/yarn-v1.22.22
 
 COPY --from=builder /app/index.js ./
 COPY --from=builder /app/src/ ./src/
 COPY --from=builder /app/public/ ./public/
+
+# Create a non-root user and group
+RUN addgroup -S portal && adduser -S portal -G portal
 
 # Create the photos mount point and give ownership to our user
 RUN mkdir -p /app/photos && chown -R portal:portal /app

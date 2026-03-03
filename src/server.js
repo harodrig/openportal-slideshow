@@ -1,37 +1,37 @@
-"use strict";
+'use strict';
 
-const http = require("http");
-const fs = require("fs");
-const path = require("path");
-const { createRateLimiter } = require("./rateLimiter");
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const { createRateLimiter } = require('./rateLimiter');
 
 // ── Configuration ────────────────────────────────────
-const PHOTOS_DIR = path.resolve(process.env.PHOTOS_DIR || "./photos");
-const PUBLIC_DIR = path.resolve("./public");
-const ALLOWED_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
+const PHOTOS_DIR = path.resolve(process.env.PHOTOS_DIR || './photos');
+const PUBLIC_DIR = path.resolve('./public');
+const ALLOWED_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif']);
 const SAFE_FILENAME = /^[\w\-. ]+$/;
 
 // ── MIME types for static files ──────────────────────
 const MIME_TYPES = {
-  ".html": "text/html; charset=utf-8",
-  ".css": "text/css; charset=utf-8",
-  ".js": "application/javascript; charset=utf-8",
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".png": "image/png",
-  ".webp": "image/webp",
-  ".gif": "image/gif",
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.gif': 'image/gif',
 };
 
 // ── Security headers ─────────────────────────────────
 function setSecurityHeaders(res) {
-  res.removeHeader("X-Powered-By");
-  res.setHeader("X-Content-Type-Options", "nosniff");
-  res.setHeader("X-Frame-Options", "DENY");
-  res.setHeader("Referrer-Policy", "no-referrer");
+  res.removeHeader('X-Powered-By');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'no-referrer');
   res.setHeader(
-    "Permissions-Policy",
-    "camera=(), microphone=(), geolocation=()",
+    'Permissions-Policy',
+    'camera=(), microphone=(), geolocation=()',
   );
   // Content-Security-Policy is intentionally omitted for this deployment.
   //
@@ -66,8 +66,8 @@ function setSecurityHeaders(res) {
 function sendJson(res, statusCode, data) {
   const body = JSON.stringify(data);
   res.writeHead(statusCode, {
-    "Content-Type": "application/json; charset=utf-8",
-    "Content-Length": Buffer.byteLength(body),
+    'Content-Type': 'application/json; charset=utf-8',
+    'Content-Length': Buffer.byteLength(body),
   });
   res.end(body);
 }
@@ -78,17 +78,17 @@ function sendError(res, statusCode, message) {
 
 function sendFile(res, filePath) {
   const ext = path.extname(filePath).toLowerCase();
-  const mime = MIME_TYPES[ext] || "application/octet-stream";
+  const mime = MIME_TYPES[ext] || 'application/octet-stream';
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
-      sendError(res, 404, "Not found");
+      sendError(res, 404, 'Not found');
       return;
     }
 
     res.writeHead(200, {
-      "Content-Type": mime,
-      "Content-Length": stats.size,
+      'Content-Type': mime,
+      'Content-Length': stats.size,
     });
 
     fs.createReadStream(filePath).pipe(res);
@@ -100,8 +100,8 @@ function sendFile(res, filePath) {
 function handleGetPhotos(res) {
   fs.readdir(PHOTOS_DIR, (err, files) => {
     if (err) {
-      console.error("Could not read photos directory:", err.message);
-      sendError(res, 500, "Could not read photos directory");
+      console.error('Could not read photos directory:', err.message);
+      sendError(res, 500, 'Could not read photos directory');
       return;
     }
 
@@ -121,12 +121,12 @@ function handleGetPhoto(res, filename) {
 
   // Reject filenames with anything other than safe characters
   if (!SAFE_FILENAME.test(baseName)) {
-    sendError(res, 400, "Invalid filename");
+    sendError(res, 400, 'Invalid filename');
     return;
   }
 
   if (!ALLOWED_EXT.has(ext)) {
-    sendError(res, 400, "File type not allowed");
+    sendError(res, 400, 'File type not allowed');
     return;
   }
 
@@ -134,7 +134,7 @@ function handleGetPhoto(res, filename) {
 
   // Ensure the resolved path is still inside PHOTOS_DIR
   if (!filePath.startsWith(PHOTOS_DIR + path.sep)) {
-    sendError(res, 403, "Forbidden");
+    sendError(res, 403, 'Forbidden');
     return;
   }
 
@@ -143,12 +143,12 @@ function handleGetPhoto(res, filename) {
 
 function handleStatic(res, urlPath) {
   // Serve index.html for the root
-  const relative = urlPath === "/" ? "index.html" : urlPath.slice(1);
+  const relative = urlPath === '/' ? 'index.html' : urlPath.slice(1);
   const filePath = path.join(PUBLIC_DIR, relative);
 
   // Ensure the resolved path is still inside PUBLIC_DIR
   if (!filePath.startsWith(PUBLIC_DIR + path.sep) && filePath !== PUBLIC_DIR) {
-    sendError(res, 403, "Forbidden");
+    sendError(res, 403, 'Forbidden');
     return;
   }
 
@@ -167,25 +167,25 @@ function createServer() {
 
     const ip = req.socket.remoteAddress;
     if (!isAllowed(ip)) {
-      res.setHeader("Retry-After", "60");
-      sendError(res, 429, "Too many requests, please slow down.");
+      res.setHeader('Retry-After', '60');
+      sendError(res, 429, 'Too many requests, please slow down.');
       return;
     }
 
     const method = req.method;
-    const urlPath = req.url.split("?")[0];
+    const urlPath = req.url.split('?')[0];
 
     console.log(`${method} ${urlPath}`);
 
-    if (method !== "GET") {
-      sendError(res, 405, "Method not allowed");
+    if (method !== 'GET') {
+      sendError(res, 405, 'Method not allowed');
       return;
     }
 
-    if (urlPath === "/api/photos") {
+    if (urlPath === '/api/photos') {
       handleGetPhotos(res);
-    } else if (urlPath.startsWith("/photos/")) {
-      const filename = urlPath.slice("/photos/".length);
+    } else if (urlPath.startsWith('/photos/')) {
+      const filename = urlPath.slice('/photos/'.length);
       handleGetPhoto(res, filename);
     } else {
       handleStatic(res, urlPath);
@@ -193,7 +193,7 @@ function createServer() {
   });
 
   // Expose stop so tests can clean up
-  server.on("close", stop);
+  server.on('close', stop);
 
   return server;
 }
